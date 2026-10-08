@@ -1,0 +1,9 @@
+{
+  "name": "Bizerba Digital Card",
+  "short_name": "Bizerba Card",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [{"src":"icon-180.png","sizes":"180x180","type":"image/png"}]
+}
