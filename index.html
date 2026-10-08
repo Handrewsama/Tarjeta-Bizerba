@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ca">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -28,11 +28,17 @@ body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
 .panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.form{padding:22px}.section-title{font-size:21px;font-weight:850;margin:2px 0 5px}.section-sub{font-size:13px;color:#777;margin:0 0 20px;line-height:1.45}.field{margin-bottom:15px}.field label{display:block;font-size:11px;font-weight:850;color:#555;margin:0 0 7px;text-transform:uppercase;letter-spacing:.7px}.field input{width:100%;border:1px solid #d7d7d4;background:#fafafa;border-radius:12px;padding:14px;font-size:16px;outline:none}.field input:focus{border-color:#555;background:#fff}.small{font-size:12px;color:#777;line-height:1.45}.footer{text-align:center;color:#999;font-size:10px;letter-spacing:.3px;margin-top:17px}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#111;color:#fff;padding:12px 16px;border-radius:13px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:20}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:420px){.app{padding-left:14px;padding-right:14px}.name{font-size:32px}.card-top{padding:25px 21px 22px}.contact,.share-area{padding-left:21px;padding-right:21px}.brand-logo{font-size:27px}.brand-sub{font-size:10px}}
 </style>
+
+<style id="bizerba-logo-fix">
+.brand-logo{display:flex;align-items:center;justify-content:flex-start;min-width:0;}
+.brand-logo img{display:block;width:clamp(150px,48vw,250px);height:auto;max-width:100%;object-fit:contain;object-position:left center;}
+@media (max-width:420px){.brand-logo img{width:min(48vw,210px);}}
+</style>
 </head>
 <body>
 <div class="app">
   <header class="header">
-    <div class="brand"><div class="brand-logo">BIZERBA</div><div class="brand-divider"></div><div class="brand-sub" id="brandSub">Digital Contact</div></div>
+    <div class="brand-logo"><img src="bizerba-logo.png" alt="Bizerba" /></div><div class="brand-divider"></div><div class="brand-sub" id="brandSub">Digital Contact</div></div>
     <div style="display:flex;align-items:center;gap:8px"><select class="lang" id="langSelect" aria-label="Language"><option value="ca">CAT</option><option value="es">ESP</option><option value="en">ENG</option><option value="de">DEU</option></select><button class="gear" id="settingsBtn" aria-label="Editar dades">⚙</button></div>
   </header>
   <div class="tabs"><button class="tab active" data-tab="card" id="tabCard">CONTACTE</button><button class="tab" data-tab="edit" id="tabEdit">EDITAR DADES</button></div>
@@ -1338,7 +1344,7 @@ const I18N={
  en:{brand:'Digital Contact',contact:'CONTACT',edit:'EDIT DETAILS',kicker:'Professional Contact',company:'Company',shareLabel:'Digital business card',share:'SHARE CONTACT',qrTitle:'Scan to save contact',qrHint:'Scan the code to save the contact',editTitle:'Contact details',editSub:'Edit the information shown on the card, QR code and shared contact.',fields:{name:'Full name',company:'Company',role:'Job title',mobile:'Mobile',phone:'Phone',email:'Email',web:'Website',address:'Address',city:'City',country:'Country'},save:'SAVE CHANGES',saved:'Details saved',qrError:'Could not generate QR code',fileReady:'Contact file ready',countryDefault:'Spain'},
  de:{brand:'Digitaler Kontakt',contact:'KONTAKT',edit:'DATEN BEARBEITEN',kicker:'Professioneller Kontakt',company:'Unternehmen',shareLabel:'Digitale Visitenkarte',share:'KONTAKT TEILEN',qrTitle:'Scannen und Kontakt speichern',qrHint:'Code scannen, um den Kontakt zu speichern',editTitle:'Kontaktdaten',editSub:'Bearbeiten Sie die Informationen auf der Karte, im QR-Code und im geteilten Kontakt.',fields:{name:'Vor- und Nachname',company:'Unternehmen',role:'Position',mobile:'Mobil',phone:'Telefon',email:'E-Mail',web:'Website',address:'Adresse',city:'Stadt',country:'Land'},save:'ÄNDERUNGEN SPEICHERN',saved:'Daten gespeichert',qrError:'QR-Code konnte nicht erstellt werden',fileReady:'Kontaktdatei bereit',countryDefault:'Spanien'}
 };
-let lang=localStorage.getItem('bizerbaDigitalCard.lang')||'ca';
+let lang=localStorage.getItem('bizerbaDigitalCard.lang')||'en';
 function applyLang(){const t=I18N[lang]||I18N.ca; document.documentElement.lang=lang; $('langSelect').value=lang; $('brandSub').textContent=t.brand; $('tabCard').textContent=t.contact; $('tabEdit').textContent=t.edit; $('kicker').textContent=t.kicker; $('companyLabel').textContent=t.company; $('shareLabel').textContent=t.shareLabel; $('shareBtn').textContent=t.share; $('qrTitle').textContent=t.qrTitle; $('qrHint').textContent=t.qrHint; $('editTitle').textContent=t.editTitle; $('editSub').textContent=t.editSub; const ids={name:'lblName',company:'lblCompany',role:'lblRole',mobile:'lblMobile',phone:'lblPhone',email:'lblEmail',web:'lblWeb',address:'lblAddress',city:'lblCity',country:'lblCountry'}; Object.keys(ids).forEach(k=>$(ids[k]).textContent=t.fields[k]); if($('saveBtn')) $('saveBtn').textContent=t.save; $('settingsBtn').setAttribute('aria-label',t.edit);}
 function setLang(v){lang=v;localStorage.setItem('bizerbaDigitalCard.lang',lang);applyLang();renderContact();}
 const KEY='bizerbaDigitalCard.v1';
