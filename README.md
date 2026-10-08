@@ -18,3 +18,6 @@ Aplicació de targeta digital que funciona localment. No utilitza cap servidor n
 
 ## Instal·lació com a icona
 Perquè Safari permeti una PWA completa amb "Afegir a pantalla d'inici", la pàgina s'ha de servir per HTTPS. El projecte inclou `manifest.webmanifest` i `sw.js` per si més endavant vols allotjar-lo en un servei estàtic. El contingut de l'app no depèn de cap API externa.
+
+
+Logo update (v5): the BIZERBA wordmark is no longer compressed with excessive negative letter spacing or artificial font weight. Its proportions are kept natural for responsive display.
