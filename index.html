@@ -31,8 +31,8 @@ body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
 
 <style id="bizerba-logo-fix">
 .brand-logo{display:flex;align-items:center;justify-content:flex-start;min-width:0;}
-.brand-logo img{display:block;width:clamp(150px,48vw,250px);height:auto;max-width:100%;object-fit:contain;object-position:left center;}
-@media (max-width:420px){.brand-logo img{width:min(48vw,210px);}}
+.brand-logo img{display:block;width:68px;height:68px;max-width:100%;object-fit:contain;object-position:left center;border-radius:16px;}
+@media (max-width:420px){.brand-logo img{width:60px;height:60px;}}
 </style>
 </head>
 <body>
@@ -47,9 +47,9 @@ body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
       <div class="card-top">
         <div class="kicker" id="kicker">Professional Contact</div>
         <div class="redline"></div>
-        <div class="name" id="viewName">Andreu Gurria Elias</div>
-        <div class="role" id="viewRole">Product Manager</div>
-        <div class="companyline"><span id="companyLabel">Company</span><div id="viewCompany">Bizerba Iberia España S.A.U.</div></div>
+        <div class="name" id="viewName"></div>
+        <div class="role" id="viewRole"></div>
+        <div class="companyline"><span id="companyLabel">Company</span><div id="viewCompany"></div></div>
       </div>
       <div class="contact" id="contactRows"></div>
       <div class="share-area">
@@ -1347,8 +1347,8 @@ const I18N={
 let lang=localStorage.getItem('bizerbaDigitalCard.lang')||'en';
 function applyLang(){const t=I18N[lang]||I18N.ca; document.documentElement.lang=lang; $('langSelect').value=lang; $('brandSub').textContent=t.brand; $('tabCard').textContent=t.contact; $('tabEdit').textContent=t.edit; $('kicker').textContent=t.kicker; $('companyLabel').textContent=t.company; $('shareLabel').textContent=t.shareLabel; $('shareBtn').textContent=t.share; $('qrTitle').textContent=t.qrTitle; $('qrHint').textContent=t.qrHint; $('editTitle').textContent=t.editTitle; $('editSub').textContent=t.editSub; const ids={name:'lblName',company:'lblCompany',role:'lblRole',mobile:'lblMobile',phone:'lblPhone',email:'lblEmail',web:'lblWeb',address:'lblAddress',city:'lblCity',country:'lblCountry'}; Object.keys(ids).forEach(k=>$(ids[k]).textContent=t.fields[k]); if($('saveBtn')) $('saveBtn').textContent=t.save; $('settingsBtn').setAttribute('aria-label',t.edit);}
 function setLang(v){lang=v;localStorage.setItem('bizerbaDigitalCard.lang',lang);applyLang();renderContact();}
-const KEY='bizerbaDigitalCard.v1';
-const defaults={name:'Andreu Gurria Elias',company:'Bizerba Iberia España S.A.U.',role:'Product Manager',mobile:'+34 617 37 5047',phone:'+34 900 80 11 09',email:'andreu.gurria@bizerba.com',web:'https://www.bizerba.com',address:'Calle Pallars, 461',city:'08019 Barcelona',country:'Spain'};
+const KEY='bizerbaDigitalCard.blank.v2';
+const defaults={name:'',company:'',role:'',mobile:'',phone:'',email:'',web:'',address:'',city:'',country:''};
 let data={...defaults};
 try{data={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
 const $=id=>document.getElementById(id);
@@ -1357,7 +1357,7 @@ function vcard(){const parts=(data.name||'').trim().split(/\s+/);const given=par
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function populate(){['name','company','role','mobile','phone','email','web','address','city','country'].forEach(k=>$(k).value=data[k]||'')}
 function renderContact(){
- $('viewCompany').textContent=data.company||'Bizerba'; $('viewName').textContent=data.name||'Nom'; $('viewRole').textContent=data.role||'';
+ $('viewCompany').textContent=data.company||''; $('viewName').textContent=data.name||''; $('viewRole').textContent=data.role||'';
  const rows=[]; if(data.mobile)rows.push(['📱','Tel:',`tel:${data.mobile}`,data.mobile]); if(data.phone)rows.push(['☎️','Tel.:',`tel:${data.phone}`,data.phone]); if(data.email)rows.push(['✉️','Email:',`mailto:${data.email}`,data.email]); if(data.web)rows.push(['🌐','Web:',data.web,data.web.replace(/^https?:\/\//,'')]); if(data.city||data.address)rows.push(['📍','', '',[data.address,data.city].filter(Boolean).join(', ')]);
  $('contactRows').innerHTML=rows.map(r=>`<div class="row"><div class="ico">${r[0]}</div><div class="val">${r[2]?`<a href="${r[2]}">${r[3]}</a>`:r[3]}</div></div>`).join('');
  renderQR($('qr'),320);
