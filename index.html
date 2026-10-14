@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f8f8f8">
-<meta name="application-name" content="Bizerba Digital Card v10">
+<meta name="application-name" content="Bizerba Digital Card v11">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Bizerba Card">
-<link rel="manifest" href="manifest-v10.webmanifest">
-<link rel="apple-touch-icon" href="icon-home-v10.png">
-<link rel="icon" type="image/png" href="favicon-v10.png">
+<link rel="manifest" href="manifest-v11.webmanifest">
+<link rel="apple-touch-icon" href="icon-home-v11.png">
+<link rel="icon" type="image/png" href="favicon-v11.png">
 <title>Bizerba Digital Card</title>
 <style>
 :root{--red:#009de0;--black:#111;--graphite:#222;--text:#151515;--muted:#6b6b6b;--line:#e6e6e6;--bg:#f8f8f8;--white:#fff;--radius:24px}
@@ -33,7 +33,10 @@ body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
 .bottom-controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:24px auto 0;padding:12px 0 4px;border-top:1px solid #e6e6e6;max-width:420px}
 .control-label{font-size:12px;color:#777}
 .bottom-controls .lang{min-width:70px}
-.bottom-controls .gear{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid #dededb;border-radius:12px;background:#fff;color:#222;font-size:13px}
+.bottom-controls .gear{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:auto;min-width:max-content;max-width:100%;min-height:44px;height:auto;padding:10px 16px;border:1px solid #dededb;border-radius:12px;background:#fff;color:#222;font-size:13px;line-height:1.25;white-space:nowrap;flex:0 0 auto}
+.bottom-controls{width:100%;padding-left:4px;padding-right:4px}
+.bottom-controls .control-label{white-space:nowrap}
+@media(max-width:360px){.bottom-controls{gap:8px}.bottom-controls .gear{font-size:12px;padding:10px 11px}.bottom-controls .lang{min-width:62px}}
 .brand{display:flex;align-items:center;gap:13px}
 </style>
 
@@ -87,11 +90,11 @@ body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
     <div class="field"><label id="lblCity">Ciutat</label><input id="city" autocomplete="address-level2"></div>
     <div class="field"><label id="lblCountry">País</label><input id="country" autocomplete="country-name"></div>
     <button class="btn primary wide" id="saveBtn">GUARDAR CANVIS</button>
-    <p class="small">Les dades es guarden només en aquest navegador/dispositiu mitjançant emmagatzematge local. No s'envien a cap servidor.</p>
+    <p class="small" id="privacyNote">Les dades es guarden només en aquest navegador/dispositiu mitjançant emmagatzematge local. No s'envien a cap servidor.</p>
   </section>
-  <div class="footer">Funciona sense Internet · QR i vCard generats localment</div>
+  <div class="footer" id="offlineNote">Funciona sense Internet · QR i vCard generats localment</div>
   <div class="bottom-controls" aria-label="Configuració i idioma">
-    <label class="control-label" for="langSelect">Idioma</label>
+    <label class="control-label" id="langLabel" for="langSelect">Language</label>
     <select class="lang" id="langSelect" aria-label="Language"><option value="ca">CAT</option><option value="es">ESP</option><option value="en" selected>ENG</option><option value="de">DEU</option></select>
     <button class="gear" id="settingsBtn" aria-label="Editar dades" title="Configuració">⚙ Configuració</button>
   </div>
@@ -1355,13 +1358,13 @@ window.QRCodeLocal=QRCode;
 </script>
 <script>
 const I18N={
- ca:{brand:'Digital Contact',contact:'CONTACTE',edit:'EDITAR DADES',kicker:'Contacte professional',company:'Empresa',shareLabel:'Targeta digital',share:'COMPARTIR CONTACTE',qrTitle:'Escaneja per guardar el contacte',qrHint:'Escaneja el codi per guardar el contacte',editTitle:'Dades del contacte',editSub:'Modifica la informació que apareixerà a la targeta, al QR i al contacte compartit.',fields:{name:'Nom i cognoms',company:'Empresa',role:'Càrrec',mobile:'Mòbil',phone:'Telèfon',email:'Email',web:'Web',address:'Adreça',city:'Ciutat',country:'País'},save:'GUARDAR CANVIS',saved:'Dades guardades',qrError:'No s’ha pogut generar el QR',fileReady:'Fitxer de contacte preparat',countryDefault:'Espanya'},
- es:{brand:'Contacto Digital',contact:'CONTACTO',edit:'EDITAR DATOS',kicker:'Contacto profesional',company:'Empresa',shareLabel:'Tarjeta digital',share:'COMPARTIR CONTACTO',qrTitle:'Escanea para guardar el contacto',qrHint:'Escanea el código para guardar el contacto',editTitle:'Datos del contacto',editSub:'Modifica la información que aparecerá en la tarjeta, el QR y el contacto compartido.',fields:{name:'Nombre y apellidos',company:'Empresa',role:'Cargo',mobile:'Móvil',phone:'Teléfono',email:'Email',web:'Web',address:'Dirección',city:'Ciudad',country:'País'},save:'GUARDAR CAMBIOS',saved:'Datos guardados',qrError:'No se ha podido generar el QR',fileReady:'Archivo de contacto preparado',countryDefault:'España'},
- en:{brand:'Digital Contact',contact:'CONTACT',edit:'EDIT DETAILS',kicker:'Professional Contact',company:'Company',shareLabel:'Digital business card',share:'SHARE CONTACT',qrTitle:'Scan to save contact',qrHint:'Scan the code to save the contact',editTitle:'Contact details',editSub:'Edit the information shown on the card, QR code and shared contact.',fields:{name:'Full name',company:'Company',role:'Job title',mobile:'Mobile',phone:'Phone',email:'Email',web:'Website',address:'Address',city:'City',country:'Country'},save:'SAVE CHANGES',saved:'Details saved',qrError:'Could not generate QR code',fileReady:'Contact file ready',countryDefault:'Spain'},
- de:{brand:'Digitaler Kontakt',contact:'KONTAKT',edit:'DATEN BEARBEITEN',kicker:'Professioneller Kontakt',company:'Unternehmen',shareLabel:'Digitale Visitenkarte',share:'KONTAKT TEILEN',qrTitle:'Scannen und Kontakt speichern',qrHint:'Code scannen, um den Kontakt zu speichern',editTitle:'Kontaktdaten',editSub:'Bearbeiten Sie die Informationen auf der Karte, im QR-Code und im geteilten Kontakt.',fields:{name:'Vor- und Nachname',company:'Unternehmen',role:'Position',mobile:'Mobil',phone:'Telefon',email:'E-Mail',web:'Website',address:'Adresse',city:'Stadt',country:'Land'},save:'ÄNDERUNGEN SPEICHERN',saved:'Daten gespeichert',qrError:'QR-Code konnte nicht erstellt werden',fileReady:'Kontaktdatei bereit',countryDefault:'Spanien'}
+ ca:{brand:'Digital Contact',contact:'CONTACTE',edit:'EDITAR DADES',kicker:'Contacte professional',company:'Empresa',shareLabel:'Targeta digital',share:'COMPARTIR CONTACTE',qrTitle:'Escaneja per guardar el contacte',qrHint:'Escaneja el codi per guardar el contacte',editTitle:'Dades del contacte',editSub:'Modifica la informació que apareixerà a la targeta, al QR i al contacte compartit.',fields:{name:'Nom i cognoms',company:'Empresa',role:'Càrrec',mobile:'Mòbil',phone:'Telèfon',email:'Email',web:'Web',address:'Adreça',city:'Ciutat',country:'País'},save:'GUARDAR CANVIS',saved:'Dades guardades',qrError:'No s’ha pogut generar el QR',fileReady:'Fitxer de contacte preparat',countryDefault:'Espanya',languageLabel:'Idioma',settings:'Configuració',privacyNote:'Les dades es guarden només en aquest navegador/dispositiu mitjançant emmagatzematge local. No s\'envien a cap servidor.',offlineNote:'Funciona sense Internet · QR i vCard generats localment'},
+ es:{brand:'Contacto Digital',contact:'CONTACTO',edit:'EDITAR DATOS',kicker:'Contacto profesional',company:'Empresa',shareLabel:'Tarjeta digital',share:'COMPARTIR CONTACTO',qrTitle:'Escanea para guardar el contacto',qrHint:'Escanea el código para guardar el contacto',editTitle:'Datos del contacto',editSub:'Modifica la información que aparecerá en la tarjeta, el QR y el contacto compartido.',fields:{name:'Nombre y apellidos',company:'Empresa',role:'Cargo',mobile:'Móvil',phone:'Teléfono',email:'Email',web:'Web',address:'Dirección',city:'Ciudad',country:'País'},save:'GUARDAR CAMBIOS',saved:'Datos guardados',qrError:'No se ha podido generar el QR',fileReady:'Archivo de contacto preparado',countryDefault:'España',languageLabel:'Idioma',settings:'Configuración',privacyNote:'Los datos se guardan solo en este navegador/dispositivo mediante almacenamiento local. No se envían a ningún servidor.',offlineNote:'Funciona sin Internet · QR y vCard generados localmente'},
+ en:{brand:'Digital Contact',contact:'CONTACT',edit:'EDIT DETAILS',kicker:'Professional Contact',company:'Company',shareLabel:'Digital business card',share:'SHARE CONTACT',qrTitle:'Scan to save contact',qrHint:'Scan the code to save the contact',editTitle:'Contact details',editSub:'Edit the information shown on the card, QR code and shared contact.',fields:{name:'Full name',company:'Company',role:'Job title',mobile:'Mobile',phone:'Phone',email:'Email',web:'Website',address:'Address',city:'City',country:'Country'},save:'SAVE CHANGES',saved:'Details saved',qrError:'Could not generate QR code',fileReady:'Contact file ready',countryDefault:'Spain',languageLabel:'Language',settings:'Settings',privacyNote:'Your data is stored only in this browser/device using local storage. It is not sent to any server.',offlineNote:'Works offline · QR and vCard generated locally'},
+ de:{brand:'Digitaler Kontakt',contact:'KONTAKT',edit:'DATEN BEARBEITEN',kicker:'Professioneller Kontakt',company:'Unternehmen',shareLabel:'Digitale Visitenkarte',share:'KONTAKT TEILEN',qrTitle:'Scannen und Kontakt speichern',qrHint:'Code scannen, um den Kontakt zu speichern',editTitle:'Kontaktdaten',editSub:'Bearbeiten Sie die Informationen auf der Karte, im QR-Code und im geteilten Kontakt.',fields:{name:'Vor- und Nachname',company:'Unternehmen',role:'Position',mobile:'Mobil',phone:'Telefon',email:'E-Mail',web:'Website',address:'Adresse',city:'Stadt',country:'Land'},save:'ÄNDERUNGEN SPEICHERN',saved:'Daten gespeichert',qrError:'QR-Code konnte nicht erstellt werden',fileReady:'Kontaktdatei bereit',countryDefault:'Deutschland',languageLabel:'Sprache',settings:'Einstellungen',privacyNote:'Ihre Daten werden nur lokal in diesem Browser/Gerät gespeichert und nicht an einen Server gesendet.',offlineNote:'Funktioniert offline · QR und vCard werden lokal erstellt'}
 };
 let lang=localStorage.getItem('bizerbaDigitalCard.lang')||'en';
-function applyLang(){const t=I18N[lang]||I18N.ca; document.documentElement.lang=lang; $('langSelect').value=lang; $('brandSub').textContent=t.brand; $('tabCard').textContent=t.contact; $('tabEdit').textContent=t.edit; $('kicker').textContent=t.kicker; $('companyLabel').textContent=t.company; $('shareLabel').textContent=t.shareLabel; $('shareBtn').textContent=t.share; $('qrTitle').textContent=t.qrTitle; $('qrHint').textContent=t.qrHint; $('editTitle').textContent=t.editTitle; $('editSub').textContent=t.editSub; const ids={name:'lblName',company:'lblCompany',role:'lblRole',mobile:'lblMobile',phone:'lblPhone',email:'lblEmail',web:'lblWeb',address:'lblAddress',city:'lblCity',country:'lblCountry'}; Object.keys(ids).forEach(k=>$(ids[k]).textContent=t.fields[k]); if($('saveBtn')) $('saveBtn').textContent=t.save; $('settingsBtn').setAttribute('aria-label',t.edit);}
+function applyLang(){const t=I18N[lang]||I18N.ca; document.documentElement.lang=lang; $('langSelect').value=lang; $('brandSub').textContent=t.brand; $('tabCard').textContent=t.contact; $('tabEdit').textContent=t.edit; $('kicker').textContent=t.kicker; $('companyLabel').textContent=t.company; $('shareLabel').textContent=t.shareLabel; $('shareBtn').textContent=t.share; $('qrTitle').textContent=t.qrTitle; $('qrHint').textContent=t.qrHint; $('editTitle').textContent=t.editTitle; $('editSub').textContent=t.editSub; const ids={name:'lblName',company:'lblCompany',role:'lblRole',mobile:'lblMobile',phone:'lblPhone',email:'lblEmail',web:'lblWeb',address:'lblAddress',city:'lblCity',country:'lblCountry'}; Object.keys(ids).forEach(k=>$(ids[k]).textContent=t.fields[k]); if($('saveBtn')) $('saveBtn').textContent=t.save; $('settingsBtn').textContent='⚙ '+t.settings; $('settingsBtn').title=t.settings; $('settingsBtn').setAttribute('aria-label',t.settings); $('langLabel').textContent=t.languageLabel; $('privacyNote').textContent=t.privacyNote; $('offlineNote').textContent=t.offlineNote;}
 function setLang(v){lang=v;localStorage.setItem('bizerbaDigitalCard.lang',lang);applyLang();renderContact();}
 const KEY='bizerbaDigitalCard.blank.v2';
 const defaults={name:'',company:'',role:'',mobile:'',phone:'',email:'',web:'',address:'',city:'',country:''};
